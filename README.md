@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 💬 AI ChatBot Application
 
-## Getting Started
+An interactive AI-powered chatbot built using React (Next.js), Node.js, and MongoDB, with Ollama serving as the LLM backend. This project allows users to have real-time conversations with a bot that streams its responses word-by-word, offering a ChatGPT-like experience with start/stop control.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🛠️ Tech Stack Used
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Frontend**: React.js (Next.js 14+ with App Router), Tailwind CSS
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB (with Mongoose)
+- **LLM API**: Ollama (local LLM support like LLaMA2, Mistral, etc.)
+- **Styling & UX**: Tailwind CSS, responsive chat layout with streaming support
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧰 Setup Instructions
 
-## Learn More
+### 1. Clone the repository
+#in terminal run the command
+git clone https://github.com/https://github.com/rishish2712/chat-bot
+cd <your-chatbot-project >
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Start the Ollama server (download ollama )**
+ollama run <modelname> (it will run the model and is model doesn't exist install the model for u adn then run the model)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+**cd backend
+npm install**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Create a `.env` file with the following
+DATABASE_URL=postgresql://<username>:<password>@localhost:5432/<database_name>
+PORT=4000
+OLLAMA_URL=http://localhost:11434
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**node createTable.js**(to create table into database)
+**node server.js**(to run the backend server)
+
+#open new terminal 
+**npm install**
+**npm run dev**(to run next.js)
+
