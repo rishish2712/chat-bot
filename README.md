@@ -45,5 +45,7 @@ OLLAMA_URL=http://localhost:11434
 
 #open new terminal 
 - **npm install**
-- **npm run dev**(to run next.js)
+- **npm run dev**
+
+  (to run next.js)
 
