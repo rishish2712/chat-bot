@@ -51,7 +51,7 @@ OLLAMA_URL=http://localhost:11434
   
  --- 
 
-▶️## Local Run Instructions
+## ▶️ Local Run Instructions
 
 Start Ollama (ollama run mistral)
 
@@ -62,7 +62,7 @@ Start Ollama (ollama run mistral)
 **Open http://localhost:3000 and start chatting!**
 ---
 
-📌 # Features 
+## 📌  Features 
 
 Streamed responses from the bot (word-by-word typing animation)
 
@@ -73,9 +73,10 @@ Auto-scroll chat window
 Smooth user-bot message handling
 
 Chat history stored in MongoDB
+
 ---
 
-📎 **Assumptions & Constraints**
+## 📎 Assumptions & Constraints
 
 Assumes a working local installation of Ollama with access to a supported model like mistral.
 
@@ -86,9 +87,10 @@ Only single-user local chat experience for now (no login/multi-session support y
 Streaming is simulated on frontend for display; not socket-based.
 
 "Stop" halts frontend rendering only; backend call is still in-flight unless explicitly aborted.
+
 ---
 
-📬 # Future Improvements
+## 📬 Future Improvements
 
 Add login/authentication for multi-user chat history
 
@@ -98,7 +100,7 @@ Add UI themes (light/dark mode)
 
 Host on cloud platforms (Vercel, Railway, etc.)
 
-🙏 # Acknowledgements
+## 🙏  Acknowledgements
 
 Ollama for open-source local LLMs
 
