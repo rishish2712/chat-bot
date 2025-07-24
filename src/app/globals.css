@@ -24,3 +24,52 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+body {
+  margin: 0;
+  font-family: 'Inter', Arial, sans-serif;
+  background: #181818;
+  color: #fff;
+}
+
+aside {
+  background: #fff;
+  color: #222;
+  border-right: 1px solid #eee;
+}
+
+button {
+  background: #222;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+button:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+input {
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 1rem;
+}
+input:disabled {
+  background: #333;
+  color: #888;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  background: #222;
+}
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
