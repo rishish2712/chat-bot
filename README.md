@@ -29,7 +29,7 @@ ollama run <modelname> (it will run the model and is model doesn't exist install
 - **cd backend**
 - **npm install**
 
-# Create a `.env` file with the following
+## Create a `.env` file with the following
 DATABASE_URL=postgresql://<username>:<password>@localhost:5432/<database_name>
 
 PORT=4000
@@ -50,7 +50,8 @@ OLLAMA_URL=http://localhost:11434
   (to run the project)
   
 
-▶️ Local Run Instructions
+▶️# Local Run Instructions
+
 Start Ollama (ollama run mistral)
 
 **Start the backend** (npm run dev in backend/)
@@ -59,7 +60,7 @@ Start Ollama (ollama run mistral)
 
 **Open http://localhost:3000 and start chatting!**
 
-📌 **Features**
+📌 # Features 
 
 Streamed responses from the bot (word-by-word typing animation)
 
@@ -83,7 +84,7 @@ Streaming is simulated on frontend for display; not socket-based.
 
 "Stop" halts frontend rendering only; backend call is still in-flight unless explicitly aborted.
 
-📬 **Future Improvements**
+📬 # Future Improvements
 
 Add login/authentication for multi-user chat history
 
@@ -93,7 +94,7 @@ Add UI themes (light/dark mode)
 
 Host on cloud platforms (Vercel, Railway, etc.)
 
-🙏 **Acknowledgements**
+🙏 # Acknowledgements
 
 Ollama for open-source local LLMs
 
