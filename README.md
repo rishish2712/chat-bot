@@ -48,7 +48,7 @@ OLLAMA_URL=http://localhost:11434
 - **npm run dev**
 
   (to run the project)
-  
+ --- 
 
 ▶️# Local Run Instructions
 
@@ -59,6 +59,7 @@ Start Ollama (ollama run mistral)
 **Start the frontend** (npm run dev in frontend/)
 
 **Open http://localhost:3000 and start chatting!**
+---
 
 📌 # Features 
 
@@ -71,6 +72,7 @@ Auto-scroll chat window
 Smooth user-bot message handling
 
 Chat history stored in MongoDB
+---
 
 📎 **Assumptions & Constraints**
 
@@ -83,6 +85,7 @@ Only single-user local chat experience for now (no login/multi-session support y
 Streaming is simulated on frontend for display; not socket-based.
 
 "Stop" halts frontend rendering only; backend call is still in-flight unless explicitly aborted.
+---
 
 📬 # Future Improvements
 
