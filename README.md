@@ -29,7 +29,7 @@ ollama run <modelname> (it will run the model and is model doesn't exist install
 - **cd backend**
 - **npm install**
 
-## Create a `.env` file with the following
+### Create a `.env` file with the following
 DATABASE_URL=postgresql://<username>:<password>@localhost:5432/<database_name>
 
 PORT=4000
@@ -48,9 +48,10 @@ OLLAMA_URL=http://localhost:11434
 - **npm run dev**
 
   (to run the project)
+  
  --- 
 
-▶️# Local Run Instructions
+▶️## Local Run Instructions
 
 Start Ollama (ollama run mistral)
 
