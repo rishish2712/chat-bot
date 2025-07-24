@@ -37,9 +37,11 @@ PORT=4000
 OLLAMA_URL=http://localhost:11434
 
 - **node createTable.js**
+
   (to create table into database)
 - **node server.js**
-- (to run the backend server)
+
+  (to run the backend server)
 
 #open new terminal 
 - **npm install**
