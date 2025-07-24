@@ -60,6 +60,7 @@ Start Ollama (ollama run mistral)
 **Open http://localhost:3000 and start chatting!**
 
 📌 **Features**
+
 Streamed responses from the bot (word-by-word typing animation)
 
 "Stop" button to cancel generation midway (retains partially generated content)
@@ -71,6 +72,7 @@ Smooth user-bot message handling
 Chat history stored in MongoDB
 
 📎 **Assumptions & Constraints**
+
 Assumes a working local installation of Ollama with access to a supported model like mistral.
 
 MongoDB should be running locally (mongodb://localhost:27017) unless otherwise configured.
@@ -82,6 +84,7 @@ Streaming is simulated on frontend for display; not socket-based.
 "Stop" halts frontend rendering only; backend call is still in-flight unless explicitly aborted.
 
 📬 **Future Improvements**
+
 Add login/authentication for multi-user chat history
 
 Upgrade to WebSocket for true real-time streaming
@@ -91,6 +94,7 @@ Add UI themes (light/dark mode)
 Host on cloud platforms (Vercel, Railway, etc.)
 
 🙏 **Acknowledgements**
+
 Ollama for open-source local LLMs
 
 Next.js
