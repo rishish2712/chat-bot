@@ -19,15 +19,15 @@ An interactive AI-powered chatbot built using React (Next.js), Node.js, and Mong
 ### 1. Clone the repository
 #in terminal run the command
 - git clone https://github.com/https://github.com/rishish2712/chat-bot
-- cd <your-chatbot-project >
+- cd '<your-chatbot-project>'
 
 
 **Start the Ollama server (download ollama )**
 ollama run <modelname> (it will run the model and is model doesn't exist install the model for u adn then run the model)
 
 
-**cd backend
-npm install**
+- **cd backend
+- npm install**
 
 # Create a `.env` file with the following
 DATABASE_URL=postgresql://<username>:<password>@localhost:5432/<database_name>
