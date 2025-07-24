@@ -23,10 +23,11 @@ export default function ChatPage() {
   async function fetchMessages(chatId) {
     try {
       if (chatId) {
-        axios.get(`http://localhost:4000/api/chat/${chatId}/messages`)
-          .then(res => setMessages(res.data),
-            router.push(`/chat/${chatId}`) // Navigate to chat page        
-          )
+        axios.post(`http://localhost:4000/api/chat/${chatId}/message`)
+          .then(res => {
+            setMessages(res.data);
+            router.push(`/chat/${chatId}`) // Navigate to chat page
+          })
           .catch(() => setMessages([]));
 
       }

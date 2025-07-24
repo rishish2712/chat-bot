@@ -2,6 +2,9 @@ import pool from './db.js';
 
 async function createTables() {
   try {
+
+  await pool.query(`CREATE DATABASE IF NOT EXISTS ollama_chatdb;`);
+
     await pool.query(`
       CREATE TABLE IF NOT EXISTS chats (
         id VARCHAR PRIMARY KEY,

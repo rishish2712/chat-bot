@@ -27,19 +27,26 @@ export default function Home() {
     axios.get('http://localhost:4000/api/chats')
       .then(res => {
         setChatList(res.data);
-        if (!currentChatId && res.data.length > 0) {
-          setCurrentChatId(res.data[0].id);
-        }
       })
       .catch(() => setChatList([]));
   }, []);
 
   useEffect(() => {
+    if (!currentChatId && chatList.length > 0) {
+      setCurrentChatId(chatList[0].id);
+      router.push(`/chat/${chatList[0].id}`);
+    }
+  }, [chatList, currentChatId]);
+
+  console.log('Current Chat ID:', currentChatId);
+
+  useEffect(() => {
     if (currentChatId) {
-      axios.get(`http://localhost:4000/api/chat/${currentChatId}/messages`)
+      axios.get(`http://localhost:4000/api/chat/${currentChatId}/message`)
         .then(res => {
-          router.push(`/chat/${currentChatId}`);
           setMessages(res.data);
+          router.push(`/chat/${currentChatId}`);
+
 
         })
         .catch(() => {
