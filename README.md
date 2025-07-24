@@ -18,8 +18,8 @@ An interactive AI-powered chatbot built using React (Next.js), Node.js, and Mong
 
 ### 1. Clone the repository
 #in terminal run the command
-git clone https://github.com/https://github.com/rishish2712/chat-bot
-cd <your-chatbot-project >
+- git clone https://github.com/https://github.com/rishish2712/chat-bot
+- cd <your-chatbot-project >
 
 
 **Start the Ollama server (download ollama )**
