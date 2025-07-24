@@ -60,6 +60,7 @@ Start Ollama (ollama run mistral)
 **Start the frontend** (npm run dev in frontend/)
 
 **Open http://localhost:3000 and start chatting!**
+
 ---
 
 ## 📌  Features 
