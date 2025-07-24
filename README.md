@@ -55,7 +55,7 @@ OLLAMA_URL=http://localhost:11434
 
 Start Ollama (ollama run mistral)
 
-**Start the backend** (npm run dev in backend/)
+**Start the backend** (node server.js in backend/)
 
 **Start the frontend** (npm run dev in frontend/)
 
