@@ -64,7 +64,7 @@ const ChatWindow = forwardRef(({ chatId, trigger }, ref) => {
   };
 
   return (
-    <div style={{ padding: '5px 20px', height: '89vh', overflowY: 'scroll' }}>
+    <div style={{ padding: 20, height: '80vh', overflowY: 'auto' }}>
       {displayMessages.map((msg, idx) => (
         <div
           key={idx}
