@@ -9,7 +9,6 @@ import LoadingIndicator from './components/LoadingIndicator';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
-
   const router = useRouter();
 
   const [input, setInput] = useState('');
@@ -18,11 +17,26 @@ export default function Home() {
   const [currentChatId, setCurrentChatId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [streamingMessage, setStreamingMessage] = useState('');
+  const [trigger, setTrigger] = useState(0);
 
   const bottomRef = useRef(null);
+  const chatWindowRef = useRef(null); // Added for stop typing
 
-  console.log('typeof setMessage:', typeof setMessages);
+  const refreshMessages = () => {
+    setTrigger(prev => prev + 1);
+  };
 
+  // Handle new messages (refresh chat)
+  const handleNewMessage = () => {
+    setTimeout(() => {
+      refreshMessages();
+    }, 0);
+  };
+
+
+
+
+  // Fetch all chats once on load
   useEffect(() => {
     axios.get('http://localhost:4000/api/chats')
       .then(res => {
@@ -31,53 +45,45 @@ export default function Home() {
       .catch(() => setChatList([]));
   }, []);
 
+  // If no chat is selected but chatList is available, select the top-most chat
   useEffect(() => {
     if (!currentChatId && chatList.length > 0) {
-      setCurrentChatId(chatList[0].id);
-      router.push(`/chat/${chatList[0].id}`);
+      const firstChatId = chatList[0]?.id;
+      setCurrentChatId(firstChatId);
+      router.push(`/chat/${firstChatId}`);
     }
   }, [chatList, currentChatId]);
 
-  console.log('Current Chat ID:', currentChatId);
-
+  // Fetch messages for the current chat
   useEffect(() => {
     if (currentChatId) {
       axios.get(`http://localhost:4000/api/chat/${currentChatId}/message`)
         .then(res => {
           setMessages(res.data);
-          router.push(`/chat/${currentChatId}`);
-
-
         })
         .catch(() => {
           setMessages([]);
         });
-
-
     }
   }, [currentChatId]);
 
+  // Scroll to bottom of chat when messages update
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, streamingMessage]);
 
+  // Create new chat
   const newChat = async () => {
-    const res = await axios.post('http://localhost:4000/api/chat');
-    setCurrentChatId(res.data.chatId);
-    setMessages([]);
+    try {
+      const res = await axios.post('http://localhost:4000/api/chat');
+      const newChatId = res.data.chatId;
+      setCurrentChatId(newChatId);
+      setMessages([]);
+      router.push(`/chat/${newChatId}`);
+    } catch (err) {
+      console.error("Failed to create new chat:", err);
+    }
   };
-
-  const onNewMessage = (msg) => {
-    setMessages((prev) => [...prev, msg]);
-  };
-  const onUpdateLastMessage = (chunk) => {
-    setMessages((prev) => {
-      const updated = [...prev];
-      updated[updated.length - 1].content += chunk;
-      return updated;
-    });
-  };
-
 
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
@@ -85,21 +91,28 @@ export default function Home() {
         chatList={chatList}
         currentChatId={currentChatId}
         onNewChat={newChat}
-        onSelectChat={setCurrentChatId}
+        onSelectChat={(id) => {
+          setCurrentChatId(id);
+          router.push(`/chat/${id}`);
+        }}
       />
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <ChatWindow messages={messages} />
-        {loading && <LoadingIndicator />}
-        <MessageInput
-          input={input}
-          setInput={setInput}
-          chatId={currentChatId}
-          disabled={loading}
-          onNewMessage={onNewMessage}
-          setStreamingMessage={setStreamingMessage}
-          onUpdateLastMessage={onUpdateLastMessage}
-          setLoading={setLoading}
-        />
+        <>
+          <ChatWindow messages={messages} />
+          {loading && <LoadingIndicator />}
+          <MessageInput
+            input={input}
+            setInput={setInput}
+            chatId={currentChatId} // ✅ FIXED
+            disabled={loading}
+            onNewMessage={handleNewMessage}
+            onUpdateLastMessage={handleNewMessage}
+            setLoading={setLoading}
+            setStreamingMessage={setStreamingMessage}
+            onStop={() => chatWindowRef.current?.stopTyping()}
+          />
+        </>
+        <div ref={bottomRef}></div>
       </main>
     </div>
   );

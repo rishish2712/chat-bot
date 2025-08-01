@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
+import { useEffect, useState, useRef, forwardRef, useImperativeHandle } from 'react';
 
 const getMessages = async (chatId) => {
   try {
@@ -8,7 +8,7 @@ const getMessages = async (chatId) => {
     if (!res.ok) throw new Error('Failed to fetch messages');
     const data = await res.json();
     return {
-      messages: data ? data.map(msg => ({ role: msg.role, content: msg.content })) : [],
+      messages: data?.map((msg) => ({ role: msg.role, content: msg.content })) || [],
     };
   } catch (error) {
     console.error('Error fetching messages:', error.message);
@@ -16,59 +16,56 @@ const getMessages = async (chatId) => {
   }
 };
 
-// Using forwardRef to control ChatWindow from parent
 const ChatWindow = forwardRef(({ chatId, trigger }, ref) => {
-  const [messages, setMessages] = useState([]);
-  const [animatedBotMessage, setAnimatedBotMessage] = useState('');
-  const typingInterval = useRef(null); // hold animation interval
+  const [displayMessages, setDisplayMessages] = useState([]);
+  const [animatedContent, setAnimatedContent] = useState('');
+  const [isAnimating, setIsAnimating] = useState(false);
+  const intervalRef = useRef(null);
 
+  // Allow parent to call "addAnimatedBotMessage"
   useImperativeHandle(ref, () => ({
-    stopTyping: () => {
-      if (typingInterval.current) {
-        clearInterval(typingInterval.current);
-        typingInterval.current = null;
-      }
+    addAnimatedBotMessage(botMessage) {
+      animateBotMessage(botMessage);
     },
   }));
 
   useEffect(() => {
-    if (chatId) loadMessages();
+    if (chatId) loadAllMessages();
+    return () => clearInterval(intervalRef.current);
   }, [chatId, trigger]);
 
-  async function loadMessages() {
-    const data = await getMessages(chatId);
+  const loadAllMessages = async () => {
+    clearInterval(intervalRef.current);
+    const { messages } = await getMessages(chatId);
 
-    const botMessages = data.messages.filter(msg => msg.role === 'bot');
-    const latestBot = botMessages.length ? botMessages[botMessages.length - 1] : null;
-    const messagesExcludingLastBot = latestBot
-      ? data.messages.slice(0, data.messages.lastIndexOf(latestBot))
-      : data.messages;
+    setIsAnimating(false);
+    setAnimatedContent('');
 
-    setMessages(messagesExcludingLastBot);
-    setAnimatedBotMessage('');
+    setDisplayMessages(messages); // Show everything instantly (no animation here)
+  };
 
-    if (latestBot) animateTyping(latestBot.content);
-  }
+  const animateBotMessage = (message) => {
+    clearInterval(intervalRef.current);
+    setIsAnimating(true);
+    setAnimatedContent('');
+    let i = 0;
 
-  function animateTyping(content) {
-    let index = 0;
-    setAnimatedBotMessage('');
-    clearInterval(typingInterval.current); // clear previous animation if any
+    intervalRef.current = setInterval(() => {
+      i++;
+      setAnimatedContent(message.content.slice(0, i));
 
-    typingInterval.current = setInterval(() => {
-      if (index <= content.length) {
-        setAnimatedBotMessage(content.slice(0, index));
-        index++;
-      } else {
-        clearInterval(typingInterval.current);
-        typingInterval.current = null;
+      if (i >= message.content.length) {
+        clearInterval(intervalRef.current);
+        setIsAnimating(false);
+        setDisplayMessages((prev) => [...prev, message]);
+        setAnimatedContent('');
       }
-    }, 20); // Adjust speed here
-  }
+    }, 20);
+  };
 
   return (
-    <div style={{ padding: 20, height: '80vh', overflowY: 'auto' }}>
-      {messages.map((msg, idx) => (
+    <div style={{ padding: '5px 20px', height: '89vh', overflowY: 'scroll' }}>
+      {displayMessages.map((msg, idx) => (
         <div
           key={idx}
           style={{
@@ -92,8 +89,14 @@ const ChatWindow = forwardRef(({ chatId, trigger }, ref) => {
         </div>
       ))}
 
-      {animatedBotMessage && (
-        <div style={{ display: 'flex', justifyContent: 'flex-start', margin: '8px 0' }}>
+      {isAnimating && animatedContent && (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            margin: '8px 0',
+          }}
+        >
           <div
             style={{
               background: '#F1F0F0',
@@ -104,7 +107,7 @@ const ChatWindow = forwardRef(({ chatId, trigger }, ref) => {
               whiteSpace: 'pre-wrap',
             }}
           >
-            <b>Bot:</b> {animatedBotMessage}
+            <b>Bot:</b> {animatedContent}
           </div>
         </div>
       )}

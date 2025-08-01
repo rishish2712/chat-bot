@@ -14,22 +14,18 @@ export default function MessageInput({
 }) {
   const router = useRouter();
   const abortControllerRef = useRef(null);
-  const [botText, setBotText] = useState(''); // ✅ Track bot text
+  const [botText, setBotText] = useState('');
 
   const sendMessage = async () => {
-    if (!input?.trim()) return;
+    const userMessage = input?.trim();
+    if (!userMessage) return;
 
-    const userMessage = input;
     setInput('');
     setLoading(true);
-    setBotText(''); // Reset bot text
-
-    console.log('Chat ID:', chatId);
+    setBotText('');
+    onNewMessage({ content: userMessage, role: 'user' });
 
     try {
-      // ✅ Show user message
-      onNewMessage({ content: userMessage, role: 'user' });
-
       abortControllerRef.current = new AbortController();
 
       const res = await fetch(`http://localhost:4000/api/chat/${chatId}/message`, {
@@ -40,11 +36,10 @@ export default function MessageInput({
       });
 
       router.push(`/chat/${chatId}`);
-
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
 
-      onNewMessage({ content: '', role: 'assistant' }); // Placeholder
+      onNewMessage({ content: '', role: 'assistant' });
 
       while (true) {
         const { done, value } = await reader.read();
@@ -53,36 +48,29 @@ export default function MessageInput({
         const chunk = decoder.decode(value, { stream: true });
         setBotText(prev => {
           const updated = prev + chunk;
-          onUpdateLastMessage(updated); // ✅ Continually update UI
+          onUpdateLastMessage(updated);
           return updated;
         });
       }
     } catch (err) {
       if (err.name === 'AbortError') {
         console.log('⛔ Streaming aborted');
-        // ✅ Stop still keeps whatever was streamed so far
-        onUpdateLastMessage(botText); // Set the final botText as-is
+        onUpdateLastMessage(botText);
       } else {
         console.error('❌ Error during streaming:', err);
       }
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   const stopStreaming = () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort(); // ⛔ abort stream
-    }
+    abortControllerRef.current?.abort();
     setLoading(false);
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto p-4">
-        {/* Your chat messages go here */}
-      </div>
-
+    <div className="fixed  h-full w-320 ">
       <div className="p-3 flex gap-2 border-t bg-zinc-900">
         <input
           className="flex-1 bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white placeholder-gray-400"
